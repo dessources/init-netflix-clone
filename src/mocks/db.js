@@ -1,6 +1,4 @@
-/* fichier simulant un backend qui stock des données
-  ici nous sauvegarderons les données dans le localStorage
-*/
+/* Simulated backend storing data in localStorage */
 import {TYPE_TV, TYPE_MOVIE} from '../config'
 const localStorageKey = 'db-back-netflix-clone-users'
 const localStorageKeyList = 'db-back-netflix-clone-users-savedlist'
@@ -32,7 +30,7 @@ async function createUser({username, password}) {
   const uid = await loadUserById(id)
   if (uid) {
     const error = new Error(
-      `Impossible de créer un utilisateur car  "${username}" existe déjà `,
+      `User "${username}" already exists`,
     )
     error.status = 400
     throw error
@@ -44,12 +42,12 @@ async function createUser({username, password}) {
 
 function validateUser({username, password}) {
   if (!username) {
-    const error = new Error("Le nom d'utilisateur est obligatoire")
+    const error = new Error('Username is required')
     error.status = 400
     throw error
   }
   if (!password) {
-    const error = new Error('Le mot de passe est obligatoire')
+    const error = new Error('Password is required')
     error.status = 400
     throw error
   }
@@ -72,7 +70,7 @@ async function authenticate({username, password}) {
   if (user.passwordHash === hashcode(password)) {
     return {...clean(user), token: btoa(user.id)}
   }
-  const error = new Error("Nom d' utilisateur ou mot de passe incorrect")
+  const error = new Error('Invalid username or password')
   error.status = 400
   throw error
 }
@@ -167,14 +165,14 @@ async function checkBookMark(id, uid, type = TYPE_TV) {
   if (type === TYPE_TV) {
     const serie = bookmark.series.find(item => item === id)
     if (serie > 0) {
-      const error = new Error('Serie déjà dans la liste')
+      const error = new Error('TV show already in list')
       error.status = 400
       throw error
     }
   } else {
     const movie = bookmark.movies.find(item => item === id)
     if (movie) {
-      const error = new Error('Film déjà dans la liste')
+      const error = new Error('Movie already in list')
       error.status = 400
       throw error
     }

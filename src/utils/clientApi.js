@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {apiKey, lang, API_URL, AUTH_URL} from '../config'
 import * as authNetflix from '../utils/authNetflixProvider'
-// utilise 'sleep' pour simuler des api longue
+// use 'sleep' to simulate long API requests
 //const sleep = t => new Promise(resolve => setTimeout(resolve, t))
 
 const clientApi = async endpoint => {
@@ -50,7 +50,7 @@ const clientNetFlix = async (endpoint, {token, data, method = 'GET'} = {}) => {
     .catch(error => {
       if (error?.response?.status === 401) {
         authNetflix.logout()
-        return Promise.reject({message: 'Authentification incorrecte'})
+        return Promise.reject({message: 'Authentication error'})
       }
       if (error.response) {
         return Promise.reject(error.response.data)

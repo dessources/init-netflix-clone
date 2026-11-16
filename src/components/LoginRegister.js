@@ -18,7 +18,7 @@ const FormLogin = ({create = false, login, register, logout}) => {
   const [checked, setChecked] = React.useState(false)
   const [username, setUsername] = React.useState('')
   const [password, setPassword] = React.useState('')
-  const label = create ? 'Inscrivez vous' : 'Connexion'
+  const label = create ? 'Sign Up' : 'Sign In'
 
   return (
     <Box
@@ -36,7 +36,7 @@ const FormLogin = ({create = false, login, register, logout}) => {
     >
       <TextField
         id="email"
-        label="Email ou numéro de téléphone"
+        label="Email or username"
         variant="filled"
         color="secondary"
         value={username}
@@ -46,7 +46,7 @@ const FormLogin = ({create = false, login, register, logout}) => {
       <TextField
         id="password"
         type="password"
-        label="Mot de passe"
+        label="Password"
         variant="filled"
         value={password}
         onChange={e => setPassword(e.target.value)}
@@ -61,7 +61,7 @@ const FormLogin = ({create = false, login, register, logout}) => {
           >
             {label}
           </Button>
-          <small>* Consultez nos CGV</small>
+          <small>* Terms and conditions apply</small>
           <small>This page is protected by Google reCAPTCHA</small>
         </>
       ) : (
@@ -88,7 +88,7 @@ const FormLogin = ({create = false, login, register, logout}) => {
                 }
                 label={
                   <Typography component={'span'} style={{fontSize: '0.8rem'}}>
-                    Se souvenir de moi
+                    Remember me
                   </Typography>
                 }
               />
@@ -109,7 +109,7 @@ function PopupLogin({open, handleClose, signup = false, status}) {
   const handleSignIn = () => {
     setCreate(false)
   }
-  const label = create ? 'Inscrivez vous' : 'Connexion'
+  const label = create ? 'Sign Up' : 'Sign In'
   const spinner =
     status === 'fetching ' ? <CircularProgress color="secondary" /> : <></>
   return (
@@ -133,17 +133,17 @@ function PopupLogin({open, handleClose, signup = false, status}) {
             logout={logout}
           />
           {error ? (
-            <Alert severity="error">Erreur : {error.message}</Alert>
+            <Alert severity="error">Error: {error.message}</Alert>
           ) : null}
         </DialogContent>
         <DialogActions style={{justifyContent: 'flex-start'}}>
           {!create ? (
             <Button onClick={handleSignUp} color="secondary">
-              Nouveau sur Netflix ? {spinner}
+              New to Netflix? {spinner}
             </Button>
           ) : (
             <Button onClick={handleSignIn} color="secondary" autoFocus>
-              Vous posséder déjà un compte ? {spinner}
+              Already have an account? {spinner}
             </Button>
           )}
         </DialogActions>

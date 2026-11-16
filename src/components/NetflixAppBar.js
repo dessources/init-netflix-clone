@@ -96,27 +96,27 @@ const NetflixAppBar = () => {
         <img className="nav__logo" src="/images/netflix-logo.png" alt="" />
         <Link to="/">
           <Typography style={margin10} variant="h6">
-            Accueil
+            Home
           </Typography>
         </Link>
         <Link to="/series">
           <Typography style={margin10} variant="h6">
-            Series
+            TV Shows
           </Typography>
         </Link>
         <Link to="/movies">
           <Typography style={margin10} variant="h6">
-            Films
+            Movies
           </Typography>
         </Link>
         <Link to="/news">
           <Typography style={margin10} variant="h6">
-            Nouveautés les plus regardées
+            New & Popular
           </Typography>
         </Link>
         <Link to="/list">
           <Typography style={margin10} variant="h6">
-            Ma liste
+            My List
           </Typography>
         </Link>
         <Search>
@@ -127,7 +127,7 @@ const NetflixAppBar = () => {
             onKeyDown={handleKeyPress}
             onChange={e => setQuery(e.target.value)}
             value={query}
-            placeholder="Rechercher"
+            placeholder="Search"
             inputProps={{'aria-label': 'search'}}
           />
         </Search>

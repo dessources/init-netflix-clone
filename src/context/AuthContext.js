@@ -10,7 +10,7 @@ const AuthContext = React.createContext()
 const useAuth = () => {
   const context = React.useContext(AuthContext)
   if (!context) {
-    throw new Error("useAuth() s'utilise avec <AuthContext.provider>")
+    throw new Error('useAuth() must be used within an <AuthProvider>')
   }
   return context
 }
@@ -68,7 +68,7 @@ const AuthProvider = props => {
   if (status === 'done') {
     return <AuthContext.Provider value={value} {...props} />
   }
-  throw new Error('status invalide')
+  throw new Error('Invalid status')
 }
 
 const useClientNetflix = () => {

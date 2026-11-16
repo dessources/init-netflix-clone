@@ -20,9 +20,9 @@ function ErrorFallback({error, resetErrorBoundary}) {
           color: '#fff',
         }}
       >
-        <h1 style={{fontSize: '2.5em'}}>Vous cherchez votre chemin ?</h1>
+        <h1 style={{fontSize: '2.5em'}}>Lost your way?</h1>
         <pre style={{color: 'red', fontSize: '1em'}}>
-          Erreur : {error.message}
+          Error: {error.message}
         </pre>
 
         <div className="banner__buttons">
@@ -30,7 +30,7 @@ function ErrorFallback({error, resetErrorBoundary}) {
             className="banner__button banner__buttonplay"
             onClick={handleClick}
           >
-            Accueil
+            Home
           </button>
         </div>
       </div>

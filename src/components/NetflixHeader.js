@@ -79,7 +79,7 @@ const NetflixHeader = ({movie, type = TYPE_MOVIE}) => {
         <div className="banner__buttons">
           <a href={movie.homepage} target="_blank" rel="noreferrer">
             <button className="banner__button banner__buttonplay">
-              Lecture
+              Play
             </button>
           </a>
           {isInList ? (
@@ -92,14 +92,14 @@ const NetflixHeader = ({movie, type = TYPE_MOVIE}) => {
                 style={{marginRight: '5px'}}
                 fontSize={'small'}
               />
-              Supprimer de ma liste
+              Remove from list
             </button>
           ) : (
             <button
               className="banner__button banner__buttonInfo"
               onClick={handleAddToListClick}
             >
-              Ajouter à ma liste
+              Add to list
             </button>
           )}
         </div>
@@ -113,7 +113,7 @@ const NetflixHeader = ({movie, type = TYPE_MOVIE}) => {
           onClose={() => setSnackbarOpen(false)}
         >
           <Alert severity="success" sx={{width: '100%'}}>
-            Liste modifiée avec succès
+            List updated successfully
           </Alert>
         </Snackbar>
       ) : null}
@@ -124,7 +124,7 @@ const NetflixHeader = ({movie, type = TYPE_MOVIE}) => {
           onClose={() => setSnackbarOpen(false)}
         >
           <Alert severity="error" sx={{width: '100%'}}>
-            Problème lors de l'ajout : {mutateBookmarkError.message}
+            Error updating list: {mutateBookmarkError.message}
           </Alert>
         </Snackbar>
       ) : null}

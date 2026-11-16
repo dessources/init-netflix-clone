@@ -89,7 +89,7 @@ function MenuHistory({style}) {
       >
         <MenuItem onClick={handleClose} disableRipple>
           <VisibilityIcon />
-          Dernières visites
+          Recently Viewed
         </MenuItem>
         {series.map((serie, index) => (
           <MenuItem key={index} onClick={handleClose} disableRipple>
@@ -105,7 +105,7 @@ function MenuHistory({style}) {
         {series.length === 0 && movies.length === 0 ? (
           <MenuItem onClick={handleClose} disableRipple>
             <DoNotDisturbIcon />
-            Pas d'historique
+            No history
           </MenuItem>
         ) : null}
       </StyledMenu>

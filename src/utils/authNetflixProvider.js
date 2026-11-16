@@ -1,6 +1,5 @@
 /* 
- -- Ne pas modifier --
- Exemple d'utilitaire permettant de se connecter au backend Netflix
+ Utility to connect to the simulated Netflix authentication backend
 */
 import axios from 'axios'
 import {AUTH_URL, localStorageTokenKey} from '../config'

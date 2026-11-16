@@ -22,7 +22,7 @@ const reducer = (state, action) => {
         movies: [],
       }
     default:
-      throw new Error('Action non supporté')
+      throw new Error('Action not supported')
   }
 }
 

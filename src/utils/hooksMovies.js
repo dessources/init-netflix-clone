@@ -39,7 +39,7 @@ const useMovieFilter = (type, filter, param) => {
       endpoint = endpointTrending
       break
     default:
-      throw new Error('Type non supporté')
+      throw new Error('Type not supported')
   }
 
   const {data} = useQuery(`${endpoint}`, () => clientApi(`${endpoint}`))

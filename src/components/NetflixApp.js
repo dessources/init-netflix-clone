@@ -22,20 +22,20 @@ const NetflixApp = ({logout}) => {
         watermark={true}
         type={TYPE_MOVIE}
         filter="trending"
-        title="Films Netflix"
+        title="Netflix Movies"
       />
       <NetflixRow
         wideImage={false}
         watermark={true}
         type={TYPE_TV}
         filter="trending"
-        title="Séries Netflix"
+        title="Netflix TV Shows"
       />
 
       <NetflixRow
         type={TYPE_MOVIE}
         filter="toprated"
-        title="Les mieux notés"
+        title="Top Rated"
         watermark={true}
         wideImage={true}
       />
@@ -44,7 +44,7 @@ const NetflixApp = ({logout}) => {
         type={TYPE_TV}
         filter="genre"
         param="10759"
-        title="Action & aventure"
+        title="Action & Adventure"
         watermark={true}
         wideImage={true}
       />
@@ -53,7 +53,7 @@ const NetflixApp = ({logout}) => {
         type={TYPE_MOVIE}
         filter="genre"
         param="53"
-        title="Les meilleurs Thriller"
+        title="Best Thrillers"
         watermark={false}
         wideImage={false}
       />

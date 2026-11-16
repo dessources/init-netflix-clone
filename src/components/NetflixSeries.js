@@ -21,20 +21,20 @@ const NetflixSeries = ({logout}) => {
         watermark={true}
         type={TYPE_TV}
         filter="trending"
-        title="Séries tendances Netflix"
+        title="Trending TV Shows"
       />
       <NetflixRow
         wideImage={false}
         watermark={true}
         type={TYPE_TV}
         filter="toprated"
-        title="Séries les mieux notées"
+        title="Top Rated TV Shows"
       />
 
       <NetflixRow
         type={TYPE_TV}
         filter="populaire"
-        title="Les séries populaires"
+        title="Popular TV Shows"
         watermark={true}
         wideImage={true}
       />
@@ -43,7 +43,7 @@ const NetflixSeries = ({logout}) => {
         type={TYPE_TV}
         filter="genre"
         param="99"
-        title="Les documentaires"
+        title="Documentaries"
         watermark={true}
         wideImage={true}
       />
@@ -52,7 +52,7 @@ const NetflixSeries = ({logout}) => {
         type={TYPE_TV}
         filter="genre"
         param="80"
-        title="Les séries criminelles"
+        title="Crime TV Shows"
         watermark={false}
         wideImage={false}
       />

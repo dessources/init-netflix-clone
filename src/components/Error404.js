@@ -27,12 +27,12 @@ function Error404() {
           color: '#fff',
         }}
       >
-        <h1 style={{fontSize: '2.5em'}}>Vous cherchez votre chemin ?</h1>
-        <pre style={{color: 'red', fontSize: '1em'}}>Erreur 404</pre>
+        <h1 style={{fontSize: '2.5em'}}>Lost your way?</h1>
+        <pre style={{color: 'red', fontSize: '1em'}}>Error 404</pre>
         <div className="banner__buttons">
           <Link to="/">
             <button className="banner__button banner__buttonplay">
-              Accueil
+              Home
             </button>
           </Link>
         </div>

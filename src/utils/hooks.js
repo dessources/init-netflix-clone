@@ -9,7 +9,7 @@ const reducer = (state, action) => {
     case 'fail':
       return {status: 'error', data: null, error: action.error}
     default:
-      throw new Error('Action non supporté')
+      throw new Error('Action not supported')
   }
 }
 const initialState = {

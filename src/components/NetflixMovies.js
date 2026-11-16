@@ -21,20 +21,20 @@ const NetflixMovies = ({logout}) => {
         watermark={true}
         type={TYPE_MOVIE}
         filter="trending"
-        title="Films Netflix"
+        title="Netflix Movies"
       />
       <NetflixRow
         wideImage={false}
         watermark={true}
         type={TYPE_MOVIE}
         filter="toprated"
-        title="Les mieux notés"
+        title="Top Rated"
       />
 
       <NetflixRow
         type={TYPE_MOVIE}
         filter="populaire"
-        title="Les films pouplaires"
+        title="Popular Movies"
         watermark={true}
         wideImage={true}
       />
@@ -43,7 +43,7 @@ const NetflixMovies = ({logout}) => {
         type={TYPE_MOVIE}
         filter="genre"
         param="14"
-        title="Films Fantastiques"
+        title="Fantasy Movies"
         watermark={true}
         wideImage={true}
       />
@@ -52,7 +52,7 @@ const NetflixMovies = ({logout}) => {
         type={TYPE_MOVIE}
         filter="genre"
         param="878"
-        title="Les films de science fiction"
+        title="Sci-Fi Movies"
         watermark={false}
         wideImage={false}
       />

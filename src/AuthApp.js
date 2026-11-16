@@ -41,4 +41,4 @@ function AuthApp() {
 
 //export {AuthApp}
 export default AuthApp
-//React.lazy requiert un export default
+// React.lazy requires a default export

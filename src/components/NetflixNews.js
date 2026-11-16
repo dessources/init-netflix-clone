@@ -21,20 +21,20 @@ const NetflixNews = ({logout}) => {
         watermark={true}
         type={TYPE_MOVIE}
         filter="latest"
-        title="A venir"
+        title="Coming Soon"
       />
       <NetflixRow
         wideImage={false}
         watermark={true}
         type={TYPE_MOVIE}
         filter="latest"
-        title="Nouveauté"
+        title="New Releases"
       />
 
       <NetflixRow
         type={TYPE_MOVIE}
         filter="latest"
-        title="Les mieux notés"
+        title="Top Rated"
         watermark={true}
         wideImage={true}
       />
@@ -43,7 +43,7 @@ const NetflixNews = ({logout}) => {
         type={TYPE_TV}
         filter="genre"
         param="10759"
-        title="Action & aventure"
+        title="Action & Adventure"
         watermark={true}
         wideImage={true}
       />
@@ -52,7 +52,7 @@ const NetflixNews = ({logout}) => {
         type={TYPE_MOVIE}
         filter="genre"
         param="53"
-        title="Les meilleurs Thriller"
+        title="Best Thrillers"
         watermark={false}
         wideImage={false}
       />

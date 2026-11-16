@@ -24,7 +24,7 @@ const NetflixSearch = ({logout}) => {
       <NetflixHeader movie={headerMovie} type={type} />
       {data?.length === 0 ? (
         <div className="row">
-          <h2>Pas de résultat</h2>
+          <h2>No results found</h2>
         </div>
       ) : (
         <>
@@ -34,7 +34,7 @@ const NetflixSearch = ({logout}) => {
             watermark={true}
             type={TYPE_MOVIE}
             filter="trending"
-            title="Films correspondants"
+            title="Matching Movies"
           />
           <NetflixRowView
             data={series}
@@ -42,7 +42,7 @@ const NetflixSearch = ({logout}) => {
             watermark={true}
             type={TYPE_TV}
             filter="trending"
-            title="Série correspondantes"
+            title="Matching TV Shows"
           />
         </>
       )}

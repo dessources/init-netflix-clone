@@ -98,7 +98,7 @@ const getToken = req => req.headers.get('Authorization')?.replace('Bearer ', '')
 async function getUser(req) {
   const token = getToken(req)
   if (!token) {
-    const error = new Error('Le Token est obligatoire')
+    const error = new Error('Token is required')
     error.status = 401
     throw error
   }
@@ -106,13 +106,13 @@ async function getUser(req) {
   try {
     userId = atob(token)
   } catch (e) {
-    const error = new Error('token Invalid. Merci de se reconnecter.')
+    const error = new Error('Invalid token. Please log in again.')
     error.status = 401
     throw error
   }
   const user = await db.loadUserById(userId, true)
   if (!user) {
-    const error = new Error('Utilisateur non trouvé avec ce Token')
+    const error = new Error('User not found with this token')
     error.status = 401
     throw error
   }
