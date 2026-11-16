@@ -1,10 +1,10 @@
 import * as React from 'react'
-import * as authNetflix from '../utils/authNetflixProvider'
-import {clientAuth, clientNetFlix} from '../utils/clientApi'
-import {useFetchData} from '../utils/hooks'
-import {useQueryClient} from 'react-query'
-import {useClearHistory} from './HistoryMoviesContext'
+import { supabase, isMockAuth } from '../utils/supabaseClient'
+import { clientNetFlix } from '../utils/clientApi'
+import { useQueryClient } from 'react-query'
+import { useClearHistory } from './HistoryMoviesContext'
 import LoadingFullScreen from '../components/LoadingFullScreen'
+
 const AuthContext = React.createContext()
 
 const useAuth = () => {
@@ -15,67 +15,108 @@ const useAuth = () => {
   return context
 }
 
-async function getUserByToken() {
-  let user = null
-  const token = await authNetflix.getToken()
-  if (token) {
-    const data = await clientAuth('me', {token})
-    user = data.data.user
-  }
-  return user
-}
-
 const AuthProvider = props => {
   const queryclient = useQueryClient()
-  const {data: authUser, execute, status, setData} = useFetchData()
   const clearHistory = useClearHistory()
-  React.useEffect(() => {
-    execute(getUserByToken())
-  }, [execute])
 
-  const [authError, setAuthError] = React.useState()
-  const login = React.useCallback(
-    data =>
-      authNetflix
-        .login(data)
-        .then(user => setData(user))
-        .catch(err => setAuthError(err)),
-    [setData],
-  )
-  const register = React.useCallback(
-    data =>
-      authNetflix
-        .register(data)
-        .then(user => setData(user))
-        .catch(err => setAuthError(err)),
-    [setData],
-  )
-  const logout = React.useCallback(() => {
-    authNetflix.logout()
+  const [authUser, setAuthUser] = React.useState(null)
+  const [token, setToken] = React.useState(null)
+  const [loading, setLoading] = React.useState(true)
+  const [authError, setAuthError] = React.useState(null)
+
+  React.useEffect(() => {
+    // 1. Check existing session on mount
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setAuthUser(session.user)
+        setToken(session.access_token)
+      } else {
+        setAuthUser(null)
+        setToken(null)
+      }
+      setLoading(false)
+    })
+
+    // 2. React to auth state changes in real time
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        setAuthUser(session.user)
+        setToken(session.access_token)
+      } else {
+        setAuthUser(null)
+        setToken(null)
+      }
+      setLoading(false)
+    })
+
+    return () => {
+      subscription?.unsubscribe?.()
+    }
+  }, [])
+
+  const login = React.useCallback(async ({ email, username, password }) => {
+    setAuthError(null)
+    const userEmail = email || (username?.includes('@') ? username : `${username}@example.com`)
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: userEmail,
+      password,
+    })
+    if (error) {
+      setAuthError(error)
+      throw error
+    }
+    return data.user
+  }, [])
+
+  const register = React.useCallback(async ({ email, username, password }) => {
+    setAuthError(null)
+    const userEmail = email || (username?.includes('@') ? username : `${username}@example.com`)
+    const { data, error } = await supabase.auth.signUp({
+      email: userEmail,
+      password,
+    })
+    if (error) {
+      setAuthError(error)
+      throw error
+    }
+    return data.user
+  }, [])
+
+  const logout = React.useCallback(async () => {
+    setAuthError(null)
+    await supabase.auth.signOut()
     queryclient.clear()
     clearHistory()
-    setData(null)
-  }, [clearHistory, queryclient, setData])
+    setAuthUser(null)
+    setToken(null)
+  }, [clearHistory, queryclient])
+
   const value = React.useMemo(
-    () => ({authUser, login, register, logout, authError}),
-    [authError, authUser, login, logout, register],
+    () => ({
+      authUser: authUser ? { ...authUser, token } : null,
+      login,
+      register,
+      logout,
+      authError,
+      setAuthError,
+      isMockAuth,
+    }),
+    [authError, authUser, login, logout, register, token],
   )
 
-  if (status === 'fetching' || status === 'idle') {
+  if (loading) {
     return <LoadingFullScreen />
   }
 
-  if (status === 'done') {
-    return <AuthContext.Provider value={value} {...props} />
-  }
-  throw new Error('Invalid status')
+  return <AuthContext.Provider value={value} {...props} />
 }
 
 const useClientNetflix = () => {
-  const {
-    authUser: {token},
-  } = useAuth()
-  return (endpoint, data) => clientNetFlix(endpoint, {...data, token})
+  const { authUser } = useAuth()
+  const token = authUser?.token || authUser?.id
+  return (endpoint, data) => clientNetFlix(endpoint, { ...data, token })
 }
 
-export {AuthContext, useAuth, AuthProvider, useClientNetflix}
+export { AuthContext, useAuth, AuthProvider, useClientNetflix }

@@ -1,9 +1,9 @@
 import axios from 'axios'
-import {apiKey, lang, API_URL, AUTH_URL} from '../config'
-import * as authNetflix from '../utils/authNetflixProvider'
-// use 'sleep' to simulate long API requests
-//const sleep = t => new Promise(resolve => setTimeout(resolve, t))
+import {apiKey, lang, API_URL} from '../config'
 
+/**
+ * Client for fetching movies, TV series, and posters from TMDB API
+ */
 const clientApi = async endpoint => {
   const page = 1
   const startChar = endpoint.includes('?') ? `&` : `?`
@@ -21,43 +21,57 @@ const clientApi = async endpoint => {
   })
 }
 
-const clientAuth = (endpoint, {token, data} = {}) => {
-  const config = {
-    headers: {
-      Authorization: token ? `Bearer ${token}` : undefined,
-      'Content-Type': data ? 'application/json' : undefined,
-    },
+/**
+ * Dead-simple local bookmark storage for the workshop.
+ * Replaces the old MSW service-worker mock with pure, zero-config localStorage.
+ */
+const BOOKMARK_STORAGE_KEY = 'netflix_bookmarks'
+
+const getLocalBookmarks = () => {
+  try {
+    const raw = window.localStorage.getItem(BOOKMARK_STORAGE_KEY)
+    return raw ? JSON.parse(raw) : { movies: [749274], series: [] }
+  } catch {
+    return { movies: [749274], series: [] }
   }
-  return data
-    ? axios.post(`${AUTH_URL}/${endpoint}`, JSON.stringify(data), config)
-    : axios.get(`${AUTH_URL}/${endpoint}`, config)
 }
 
-const clientNetFlix = async (endpoint, {token, data, method = 'GET'} = {}) => {
-  const config = {
-    method,
-    url: `${AUTH_URL}/${endpoint}`,
-    data: JSON.stringify(data),
-    headers: {
-      Authorization: token ? `Bearer ${token}` : undefined,
-      'Content-Type': data ? 'application/json' : undefined,
-    },
-  }
-  return axios(config)
-    .then(response => {
-      return response.data
-    })
-    .catch(error => {
-      if (error?.response?.status === 401) {
-        authNetflix.logout()
-        return Promise.reject({message: 'Authentication error'})
-      }
-      if (error.response) {
-        return Promise.reject(error.response.data)
-      } else {
-        return Promise.reject(error)
-      }
-    })
+const saveLocalBookmarks = bookmarks => {
+  window.localStorage.setItem(BOOKMARK_STORAGE_KEY, JSON.stringify(bookmarks))
 }
 
-export {clientApi, clientAuth, clientNetFlix}
+const clientNetFlix = async (endpoint, {data, method = 'GET'} = {}) => {
+  if (endpoint.startsWith('bookmark')) {
+    const bookmarks = getLocalBookmarks()
+    const isMovie = endpoint.includes('movie')
+    const category = isMovie ? 'movies' : 'series'
+
+    if (method === 'GET') {
+      return { bookmark: bookmarks }
+    }
+
+    if (method === 'POST') {
+      const id = data?.id
+      if (id && !bookmarks[category].includes(id)) {
+        bookmarks[category].push(id)
+        saveLocalBookmarks(bookmarks)
+      }
+      return { bookmark: bookmarks }
+    }
+
+    if (method === 'DELETE') {
+      const id = data?.id
+      if (id) {
+        bookmarks[category] = bookmarks[category].filter(item => item !== id)
+        saveLocalBookmarks(bookmarks)
+      }
+      return { bookmark: bookmarks }
+    }
+  }
+
+  return { bookmark: { movies: [], series: [] } }
+}
+
+const clientAuth = () => Promise.resolve({ data: {} })
+
+export { clientApi, clientAuth, clientNetFlix }

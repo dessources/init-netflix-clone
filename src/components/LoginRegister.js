@@ -14,15 +14,34 @@ import Alert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
 import {useAuth} from '../context/AuthContext'
 
-const FormLogin = ({create = false, login, register, logout}) => {
+const FormLogin = ({create = false, login, register}) => {
   const [checked, setChecked] = React.useState(false)
-  const [username, setUsername] = React.useState('')
+  const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
   const label = create ? 'Sign Up' : 'Sign In'
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+    if (!email || !password) return
+    setIsSubmitting(true)
+    try {
+      if (create) {
+        await register({email, password})
+      } else {
+        await login({email, password})
+      }
+    } catch {
+      // Error is caught and set in AuthContext
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   return (
     <Box
       component="form"
+      onSubmit={handleSubmit}
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -36,11 +55,13 @@ const FormLogin = ({create = false, login, register, logout}) => {
     >
       <TextField
         id="email"
+        type="email"
         label="Email or username"
         variant="filled"
         color="secondary"
-        value={username}
-        onChange={e => setUsername(e.target.value)}
+        required
+        value={email}
+        onChange={e => setEmail(e.target.value)}
         style={{opacity: '1'}}
       />
       <TextField
@@ -48,6 +69,8 @@ const FormLogin = ({create = false, login, register, logout}) => {
         type="password"
         label="Password"
         variant="filled"
+        color="secondary"
+        required
         value={password}
         onChange={e => setPassword(e.target.value)}
       />
@@ -57,9 +80,10 @@ const FormLogin = ({create = false, login, register, logout}) => {
             style={{margin: '20px 0 5px 0'}}
             variant="contained"
             color="secondary"
-            onClick={() => register({username, password})}
+            type="submit"
+            disabled={isSubmitting}
           >
-            {label}
+            {isSubmitting ? <CircularProgress size={24} color="inherit" /> : label}
           </Button>
           <small>* Terms and conditions apply</small>
           <small>This page is protected by Google reCAPTCHA</small>
@@ -70,12 +94,12 @@ const FormLogin = ({create = false, login, register, logout}) => {
             style={{margin: '20px 0 5px 0'}}
             variant="contained"
             color="secondary"
-            onClick={() => login({username, password})}
+            type="submit"
+            disabled={isSubmitting}
           >
-            {label}
+            {isSubmitting ? <CircularProgress size={24} color="inherit" /> : label}
           </Button>
           <div>
-            {' '}
             <FormGroup row>
               <FormControlLabel
                 control={
@@ -100,23 +124,25 @@ const FormLogin = ({create = false, login, register, logout}) => {
   )
 }
 
-function PopupLogin({open, handleClose, signup = false, status}) {
-  const {login, logout, register, authError: error} = useAuth()
+function PopupLogin({open, handleClose, signup = false}) {
+  const {login, register, authError: error, setAuthError, isMockAuth} = useAuth()
   const [create, setCreate] = React.useState(signup)
+
   const handleSignUp = () => {
+    setAuthError(null)
     setCreate(true)
   }
   const handleSignIn = () => {
+    setAuthError(null)
     setCreate(false)
   }
   const label = create ? 'Sign Up' : 'Sign In'
-  const spinner =
-    status === 'fetching ' ? <CircularProgress color="secondary" /> : <></>
+
   return (
     <>
       <Dialog
         PaperProps={{
-          sx: {opacity: 0.9},
+          sx: {opacity: 0.95},
         }}
         style={{backgroundColor: 'transparent'}}
         open={open}
@@ -126,24 +152,30 @@ function PopupLogin({open, handleClose, signup = false, status}) {
       >
         <DialogTitle id="alert-dialog-title">{label}</DialogTitle>
         <DialogContent>
+          {isMockAuth && (
+            <Alert severity="info" sx={{mb: 2}}>
+              Mock Auth Active (set Supabase keys in .env for live auth)
+            </Alert>
+          )}
           <FormLogin
             create={create}
             login={login}
             register={register}
-            logout={logout}
           />
           {error ? (
-            <Alert severity="error">Error: {error.message}</Alert>
+            <Alert severity="error" sx={{mt: 2}}>
+              Error: {error.message || 'Authentication failed'}
+            </Alert>
           ) : null}
         </DialogContent>
         <DialogActions style={{justifyContent: 'flex-start'}}>
           {!create ? (
             <Button onClick={handleSignUp} color="secondary">
-              New to Netflix? {spinner}
+              New to Netflix? Sign up now
             </Button>
           ) : (
             <Button onClick={handleSignIn} color="secondary" autoFocus>
-              Already have an account? {spinner}
+              Already have an account? Sign in
             </Button>
           )}
         </DialogActions>
@@ -151,4 +183,5 @@ function PopupLogin({open, handleClose, signup = false, status}) {
     </>
   )
 }
+
 export {PopupLogin as LoginRegister}

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import './mocks'
 import {useAuth} from './context/AuthContext'
 import {AppProviders} from './context'
 import LoadingFullScreen from './components/LoadingFullScreen'
