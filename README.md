@@ -87,4 +87,3 @@ A modern React Netflix clone adapted specifically as a hands-on workshop project
 - `npm start` (or `npm run dev`): Starts the Vite development server on port 3000 with instant Hot Module Replacement (HMR).
 - `npm run build`: Bundles the application for production into `dist/`.
 - `npm run preview`: Locally previews the production build.
-- `npm run format`: Formats code with Prettier.

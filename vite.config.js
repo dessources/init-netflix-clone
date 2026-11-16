@@ -45,6 +45,9 @@ export default defineConfig(({ mode }) => {
       'process.env.REACT_APP_AUTH_URL': JSON.stringify(
         env.REACT_APP_AUTH_URL || 'https://auth.service.com'
       ),
+      'process.env.REACT_APP_API_KEY': JSON.stringify(
+        env.REACT_APP_API_KEY || ''
+      ),
       'process.env.NODE_ENV': JSON.stringify(mode),
     },
     server: {
