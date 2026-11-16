@@ -1,10 +1,10 @@
 import React from 'react'
+import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
-import {makeStyles} from '@mui/styles'
 import Checkbox from '@mui/material/Checkbox'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -14,29 +14,26 @@ import Alert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
 import {useAuth} from '../context/AuthContext'
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    minWidth: '330px',
-    '& > *': {
-      margin: theme.spacing(1),
-    },
-  },
-  dialog: {
-    opacity: '0.9',
-  },
-}))
-
 const FormLogin = ({create = false, login, register, logout}) => {
   const [checked, setChecked] = React.useState(false)
   const [username, setUsername] = React.useState('')
   const [password, setPassword] = React.useState('')
-  const classes = useStyles()
   const label = create ? 'Inscrivez vous' : 'Connexion'
 
   return (
-    <form className={classes.root} noValidate autoComplete="off">
+    <Box
+      component="form"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        minWidth: '330px',
+        '& > *': {
+          m: 1,
+        },
+      }}
+      noValidate
+      autoComplete="off"
+    >
       <TextField
         id="email"
         label="Email ou numéro de téléphone"
@@ -99,13 +96,12 @@ const FormLogin = ({create = false, login, register, logout}) => {
           </div>
         </>
       )}
-    </form>
+    </Box>
   )
 }
 
 function PopupLogin({open, handleClose, signup = false, status}) {
   const {login, logout, register, authError: error} = useAuth()
-  const classes = useStyles()
   const [create, setCreate] = React.useState(signup)
   const handleSignUp = () => {
     setCreate(true)
@@ -119,8 +115,8 @@ function PopupLogin({open, handleClose, signup = false, status}) {
   return (
     <>
       <Dialog
-        classes={{
-          paper: classes.dialog,
+        PaperProps={{
+          sx: {opacity: 0.9},
         }}
         style={{backgroundColor: 'transparent'}}
         open={open}

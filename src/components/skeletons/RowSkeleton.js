@@ -7,7 +7,7 @@ const RowSkeleton = ({nbElement = 20, title = 'Films', wideImage = true}) => {
     postersSkeletons.push(
       <div key={i} className={`row__poster row__posterLarge`}>
         <Skeleton
-        sx={{ bgcolor: 'grey.900' }}
+          sx={{bgcolor: 'grey.900'}}
           variant="rectangular"
           width={wideImage ? 400 : 166}
           height={wideImage ? 225 : 250}

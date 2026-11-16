@@ -1,7 +1,6 @@
 /* fichier simulant un backend qui stock des données
   ici nous sauvegarderons les données dans le localStorage
 */
-import crypto from 'crypto'
 import {TYPE_TV, TYPE_MOVIE} from '../config'
 const localStorageKey = 'db-back-netflix-clone-users'
 const localStorageKeyList = 'db-back-netflix-clone-users-savedlist'
@@ -57,7 +56,13 @@ function validateUser({username, password}) {
 }
 
 function hashcode(data) {
-  return crypto.createHash('md5').update(data).digest('hex')
+  let hash = 0
+  for (let i = 0; i < data.length; i++) {
+    const char = data.charCodeAt(i)
+    hash = (hash << 5) - hash + char
+    hash |= 0
+  }
+  return Math.abs(hash).toString(16)
 }
 
 async function authenticate({username, password}) {
@@ -65,7 +70,7 @@ async function authenticate({username, password}) {
   const id = hashcode(username)
   const user = (await loadUserById(id)) || {}
   if (user.passwordHash === hashcode(password)) {
-    return {...clean(user), token: Buffer.from(user.id).toString('base64')}
+    return {...clean(user), token: btoa(user.id)}
   }
   const error = new Error("Nom d' utilisateur ou mot de passe incorrect")
   error.status = 400

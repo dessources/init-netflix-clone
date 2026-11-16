@@ -7,7 +7,6 @@ import {TYPE_MOVIE, TYPE_TV} from '../config'
 import {useParams, useLocation} from 'react-router-dom'
 import {useMovie} from '../utils/hooksMovies'
 import {useAddToHistory} from '../context/HistoryMoviesContext'
-import {Profiler} from './Profiler'
 import './Netflix.css'
 
 const NetflixById = ({logout}) => {
@@ -33,53 +32,51 @@ const NetflixById = ({logout}) => {
 
   return (
     <div>
-      <Profiler id="Film by Id" appData={{type, id: headerMovie?.id}}>
-        <NetflixAppBar logout={logout} />
+      <NetflixAppBar logout={logout} />
 
-        <NetflixHeader movie={headerMovie} type={type} />
-        <NetflixRow
-          wideImage={true}
-          watermark={true}
-          type={TYPE_MOVIE}
-          filter="trending"
-          title="Films Netflix"
-        />
-        <NetflixRow
-          wideImage={false}
-          watermark={true}
-          type={TYPE_TV}
-          filter="trending"
-          title="Série Netflix"
-        />
+      <NetflixHeader movie={headerMovie} type={type} />
+      <NetflixRow
+        wideImage={true}
+        watermark={true}
+        type={TYPE_MOVIE}
+        filter="trending"
+        title="Films Netflix"
+      />
+      <NetflixRow
+        wideImage={false}
+        watermark={true}
+        type={TYPE_TV}
+        filter="trending"
+        title="Série Netflix"
+      />
 
-        <NetflixRow
-          type={TYPE_MOVIE}
-          filter="toprated"
-          title="Les mieux notés"
-          watermark={true}
-          wideImage={true}
-        />
+      <NetflixRow
+        type={TYPE_MOVIE}
+        filter="toprated"
+        title="Les mieux notés"
+        watermark={true}
+        wideImage={true}
+      />
 
-        <NetflixRow
-          type={TYPE_TV}
-          filter="genre"
-          param="10759"
-          title="Action & aventure"
-          watermark={true}
-          wideImage={true}
-        />
+      <NetflixRow
+        type={TYPE_TV}
+        filter="genre"
+        param="10759"
+        title="Action & aventure"
+        watermark={true}
+        wideImage={true}
+      />
 
-        <NetflixRow
-          type={TYPE_MOVIE}
-          filter="genre"
-          param="53"
-          title="Les meilleurs Thriller"
-          watermark={false}
-          wideImage={false}
-        />
+      <NetflixRow
+        type={TYPE_MOVIE}
+        filter="genre"
+        param="53"
+        title="Les meilleurs Thriller"
+        watermark={false}
+        wideImage={false}
+      />
 
-        <NetFlixFooter color="secondary" si />
-      </Profiler>
+      <NetFlixFooter color="secondary" si />
     </div>
   )
 }

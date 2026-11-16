@@ -52,5 +52,4 @@ const NetflixSearch = ({logout}) => {
   )
 }
 
-
 export {NetflixSearch}

@@ -11,5 +11,4 @@ server.start({
   },
 })
 
-export * from 'msw'
 export {server}

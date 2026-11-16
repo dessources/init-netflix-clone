@@ -32,4 +32,3 @@ function UnauthApp() {
 }
 //export {UnauthApp}
 export default UnauthApp
-//React.lazy requiert un export default

@@ -104,7 +104,7 @@ async function getUser(req) {
   }
   let userId
   try {
-    userId = Buffer.from(token, 'base64').toString()
+    userId = atob(token)
   } catch (e) {
     const error = new Error('token Invalid. Merci de se reconnecter.')
     error.status = 401

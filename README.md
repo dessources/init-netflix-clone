@@ -1,91 +1,90 @@
-# Getting Started with Create React App
+# Netflix Clone - Workshop Authentication & APIs
 
-- This project was bootstrapped with
-  [Create React App](https://github.com/facebook/create-react-app).
+A modern React Netflix clone adapted specifically as a hands-on workshop project to teach **Authentication flows** and **API consumption** in modern React applications.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Features & Teaching Topics
 
-### `yarn start`
+- **Authentication System**:
+  - Registration & Login dialogs with form validation.
+  - JWT / bearer token storage & session persistence via `localStorage`.
+  - Conditional rendering: Unauthorized app (`<UnauthApp />`) vs. Authorized app (`<AuthApp />`).
+  - Auth context and custom hooks (`useAuth()`, `useClientNetflix()`).
+  - Simulated local backend authentication endpoints via [Mock Service Worker (MSW)](https://mswjs.io/).
+- **API Consumption & Data Management**:
+  - Movie & TV Series discovery and search via The Movie Database (TMDB) API.
+  - Server state caching, background refetching, and mutations with **React Query**.
+  - Custom data fetching hooks (`useMovie`, `useBookmark`, `useMovieFilter`).
+  - Dynamic route parameters and detail pages with **React Router v6**.
+- **Modern UI & Design System**:
+  - Built with **Material-UI (MUI v5)** and Emotion styled components.
+  - Skeletons and lazy-loaded views for smooth loading states.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+---
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 🛠 Prerequisites
 
-### `yarn test`
+- **Node.js**: `>= 18.0.0` (compatible with Node 18, 20, 22, and 24+)
+- **npm**: `>= 9.0.0`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests)
-for more information.
+---
 
-### `yarn build`
+## 📦 Getting Started
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best
-performance.
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. **Start the development server**:
+   ```bash
+   npm start
+   # or
+   npm run dev
+   ```
 
-See the section about
-[deployment](https://facebook.github.io/create-react-app/docs/deployment) for
-more information.
+3. Open your browser at [http://localhost:3000](http://localhost:3000).
 
-### `yarn eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 📁 Key Project Structure
 
-If you aren’t satisfied with the build tool and configuration choices, you can
-`eject` at any time. This command will remove the single build dependency from
-your project.
+```
+├── public/                 # Static assets & Mock Service Worker script
+│   └── mockServiceWorker.js
+├── src/
+│   ├── components/         # React presentation & layout components
+│   │   ├── LoginRegister.js# Login / Register modal form
+│   │   ├── NetflixApp.js   # Main authenticated dashboard
+│   │   ├── NetflixAppBar.js# Navigation bar with user menu & search
+│   │   ├── NetflixById.js  # Movie / TV show detail view
+│   │   └── ...
+│   ├── context/            # React context providers
+│   │   ├── AuthContext.js  # Global auth state & token management
+│   │   └── HistoryMoviesContext.js
+│   ├── mocks/              # Simulated backend (MSW)
+│   │   ├── db.js           # LocalStorage-backed database (users & bookmarks)
+│   │   ├── handlers.js     # API handlers for /login, /register, /me, /bookmark
+│   │   └── server.js       # Browser MSW worker setup
+│   ├── utils/              # API clients & hooks
+│   │   ├── authNetflixProvider.js # Auth API calls
+│   │   ├── clientApi.js    # Axios clients for TMDB & auth backend
+│   │   └── hooksMovies.js  # React Query hooks for movies & series
+│   ├── AuthApp.js          # Router & views for authenticated users
+│   ├── UnauthApp.js        # Welcome screen & login for unauthenticated users
+│   ├── App.js              # Root component switching between Auth & Unauth
+│   └── index.js            # React 18 createRoot entrypoint
+├── index.html              # Vite entrypoint HTML
+├── vite.config.js          # Vite build & dev configuration
+└── package.json            # Project dependencies & scripts
+```
 
-Instead, it will copy all the configuration files and the transitive
-dependencies (webpack, Babel, ESLint, etc) right into your project so you have
-full control over them. All of the commands except `eject` will still work, but
-they will point to the copied scripts so you can tweak them. At this point
-you’re on your own.
+---
 
-You don’t have to ever use `eject`. The curated feature set is suitable for
-small and middle deployments, and you shouldn’t feel obligated to use this
-feature. However we understand that this tool wouldn’t be useful if you couldn’t
-customize it when you are ready for it.
+## ⚙️ Available Scripts
 
-## Learn More
-
-You can learn more in the
-[Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here:
-[https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here:
-[https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here:
-[https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here:
-[https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here:
-[https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here:
-[https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- `npm start` (or `npm run dev`): Starts the Vite development server on port 3000 with instant Hot Module Replacement (HMR).
+- `npm run build`: Bundles the application for production into `dist/`.
+- `npm run preview`: Locally previews the production build.
+- `npm run format`: Formats code with Prettier.

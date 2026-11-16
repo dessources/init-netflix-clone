@@ -5,7 +5,6 @@
 import axios from 'axios'
 import {AUTH_URL, localStorageTokenKey} from '../config'
 
-
 async function clientApiNetflix(endpoint, data) {
   const config = {
     headers: {'Content-Type': 'application/json'},
