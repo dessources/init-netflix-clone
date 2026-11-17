@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
@@ -12,30 +12,32 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Alert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
-import {useAuth} from '../context/AuthContext'
+import {supabase, isMockAuth} from '../utils/supabaseClient'
 
-const FormLogin = ({create = false, login, register}) => {
-  const [checked, setChecked] = React.useState(false)
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
-  const [isSubmitting, setIsSubmitting] = React.useState(false)
+const FormLogin = ({create = false, onError}) => {
+  const [checked, setChecked] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const label = create ? 'Sign Up' : 'Sign In'
 
   const handleSubmit = async e => {
     e.preventDefault()
     if (!email || !password) return
+
     setIsSubmitting(true)
-    try {
-      if (create) {
-        await register({email, password})
-      } else {
-        await login({email, password})
-      }
-    } catch {
-      // Error is caught and set in AuthContext
-    } finally {
-      setIsSubmitting(false)
+    onError(null)
+
+    const userEmail = email.includes('@') ? email : `${email}@example.com`
+
+    const {error} = create
+      ? await supabase.auth.signUp({email: userEmail, password})
+      : await supabase.auth.signInWithPassword({email: userEmail, password})
+
+    if (error) {
+      onError(error)
     }
+    setIsSubmitting(false)
   }
 
   return (
@@ -83,7 +85,11 @@ const FormLogin = ({create = false, login, register}) => {
             type="submit"
             disabled={isSubmitting}
           >
-            {isSubmitting ? <CircularProgress size={24} color="inherit" /> : label}
+            {isSubmitting ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              label
+            )}
           </Button>
           <small>* Terms and conditions apply</small>
           <small>This page is protected by Google reCAPTCHA</small>
@@ -97,7 +103,11 @@ const FormLogin = ({create = false, login, register}) => {
             type="submit"
             disabled={isSubmitting}
           >
-            {isSubmitting ? <CircularProgress size={24} color="inherit" /> : label}
+            {isSubmitting ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              label
+            )}
           </Button>
           <div>
             <FormGroup row>
@@ -125,62 +135,56 @@ const FormLogin = ({create = false, login, register}) => {
 }
 
 function PopupLogin({open, handleClose, signup = false}) {
-  const {login, register, authError: error, setAuthError, isMockAuth} = useAuth()
-  const [create, setCreate] = React.useState(signup)
+  const [create, setCreate] = useState(signup)
+  const [error, setError] = useState(null)
 
   const handleSignUp = () => {
-    setAuthError(null)
+    setError(null)
     setCreate(true)
   }
   const handleSignIn = () => {
-    setAuthError(null)
+    setError(null)
     setCreate(false)
   }
   const label = create ? 'Sign Up' : 'Sign In'
 
   return (
-    <>
-      <Dialog
-        PaperProps={{
-          sx: {opacity: 0.95},
-        }}
-        style={{backgroundColor: 'transparent'}}
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{label}</DialogTitle>
-        <DialogContent>
-          {isMockAuth && (
-            <Alert severity="info" sx={{mb: 2}}>
-              Mock Auth Active (set Supabase keys in .env for live auth)
-            </Alert>
-          )}
-          <FormLogin
-            create={create}
-            login={login}
-            register={register}
-          />
-          {error ? (
-            <Alert severity="error" sx={{mt: 2}}>
-              Error: {error.message || 'Authentication failed'}
-            </Alert>
-          ) : null}
-        </DialogContent>
-        <DialogActions style={{justifyContent: 'flex-start'}}>
-          {!create ? (
-            <Button onClick={handleSignUp} color="secondary">
-              New to Netflix? Sign up now
-            </Button>
-          ) : (
-            <Button onClick={handleSignIn} color="secondary" autoFocus>
-              Already have an account? Sign in
-            </Button>
-          )}
-        </DialogActions>
-      </Dialog>
-    </>
+    <Dialog
+      PaperProps={{
+        sx: {opacity: 0.95},
+      }}
+      style={{backgroundColor: 'transparent'}}
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">{label}</DialogTitle>
+      <DialogContent>
+        {isMockAuth && (
+          <Alert severity="info" sx={{mb: 2}}>
+            Mock Auth Active (set Supabase keys in .env for live auth)
+          </Alert>
+        )}
+        <FormLogin create={create} onError={setError} />
+        {error ? (
+          <Alert severity="error" sx={{mt: 2}}>
+            Error: {error.message || 'Authentication failed'}
+          </Alert>
+        ) : null}
+      </DialogContent>
+      <DialogActions style={{justifyContent: 'flex-start'}}>
+        {!create ? (
+          <Button onClick={handleSignUp} color="secondary">
+            New to Netflix? Sign up now
+          </Button>
+        ) : (
+          <Button onClick={handleSignIn} color="secondary" autoFocus>
+            Already have an account? Sign in
+          </Button>
+        )}
+      </DialogActions>
+    </Dialog>
   )
 }
 

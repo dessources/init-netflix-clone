@@ -1,18 +1,34 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import axios from 'axios'
 import {NetflixAppBar} from './NetflixAppBar'
 import {NetflixRow} from './NetflixRow'
 import {NetFlixFooter} from './NetFlixFooter'
 import {NetflixHeader} from './NetflixHeader'
 import {getRandomType, getRandomId} from '../utils/helper'
-import {useMovie} from '../utils/hooksMovies'
-
-import {TYPE_MOVIE, TYPE_TV} from '../config'
+import {API_URL, apiKey, lang, TYPE_MOVIE, TYPE_TV} from '../config'
 import './Netflix.css'
 
 const NetflixApp = ({logout}) => {
-  const [type] = React.useState(getRandomType())
-  const [defaultMovieId] = React.useState(getRandomId(type))
-  const headerMovie = useMovie(type, defaultMovieId)
+  const [type] = useState(getRandomType())
+  const [defaultMovieId] = useState(getRandomId(type))
+  const [headerMovie, setHeaderMovie] = useState(null)
+
+  useEffect(() => {
+    const url = `${API_URL}/${type}/${defaultMovieId}?api_key=${apiKey}&language=${lang}`
+
+    // --- STEP 1: Using native browser fetch() ---
+    // fetch(url)
+    //   .then(response => response.json())
+    //   .then(data => setHeaderMovie(data))
+    //   .catch(error => console.error('Error fetching header movie:', error))
+
+    // --- STEP 2: Simplified with axios.get() ---
+    axios
+      .get(url)
+      .then(response => setHeaderMovie(response.data))
+      .catch(error => console.error('Error fetching header movie:', error))
+  }, [type, defaultMovieId])
+
   return (
     <div>
       <NetflixAppBar logout={logout} />
@@ -31,7 +47,6 @@ const NetflixApp = ({logout}) => {
         filter="trending"
         title="Netflix TV Shows"
       />
-
       <NetflixRow
         type={TYPE_MOVIE}
         filter="toprated"
@@ -39,7 +54,6 @@ const NetflixApp = ({logout}) => {
         watermark={true}
         wideImage={true}
       />
-
       <NetflixRow
         type={TYPE_TV}
         filter="genre"
@@ -48,7 +62,6 @@ const NetflixApp = ({logout}) => {
         watermark={true}
         wideImage={true}
       />
-
       <NetflixRow
         type={TYPE_MOVIE}
         filter="genre"
@@ -57,8 +70,9 @@ const NetflixApp = ({logout}) => {
         watermark={false}
         wideImage={false}
       />
-      <NetFlixFooter color="secondary" si />
+      <NetFlixFooter color="secondary" />
     </div>
   )
 }
+
 export {NetflixApp}
