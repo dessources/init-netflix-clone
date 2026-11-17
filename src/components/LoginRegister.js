@@ -1,17 +1,8 @@
 import React, {useState} from 'react'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Dialog from '@mui/material/Dialog'
-import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
-import DialogTitle from '@mui/material/DialogTitle'
-import Checkbox from '@mui/material/Checkbox'
-import FormGroup from '@mui/material/FormGroup'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
-import Alert from '@mui/material/Alert'
-import CircularProgress from '@mui/material/CircularProgress'
+import {
+  Box, Button, Dialog, DialogActions, DialogContent, DialogTitle,
+  Checkbox, FormGroup, FormControlLabel, TextField, Typography, Alert, CircularProgress,
+} from '@mui/material'
 import {supabase, isMockAuth} from '../utils/supabaseClient'
 
 const FormLogin = ({create = false, onError}) => {
