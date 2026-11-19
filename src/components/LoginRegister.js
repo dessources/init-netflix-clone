@@ -7,14 +7,25 @@
    Follow the steps below in order from top to bottom.
    ============================================================ */
 
-import React, {useState} from 'react'
+import React, { useState } from "react";
 import {
-  Box, Button, Dialog, DialogActions, DialogContent, DialogTitle,
-  Checkbox, FormGroup, FormControlLabel, TextField, Typography, Alert, CircularProgress,
-} from '@mui/material'
-import {supabase} from '../utils/supabaseClient'
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+  TextField,
+  Typography,
+  Alert,
+  CircularProgress,
+} from "@mui/material";
+import { supabase } from "../utils/supabaseClient";
 
-function LoginRegister({open, handleClose, signup = false}) {
+function LoginRegister({ open, handleClose, signup = false }) {
   /* ------------------------------------------------------------
      STEP 1: FORM & AUTH STATE (useState)
      Declare state variables to track what the user types and the
@@ -30,8 +41,14 @@ function LoginRegister({open, handleClose, signup = false}) {
        const label = create ? 'Sign Up' : 'Sign In'
      ------------------------------------------------------------ */
 
-  // TODO: Declare create, email, password, checked, isSubmitting, error, and label
+  const [create, setCreate] = useState(signup);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [checked, setChecked] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
+  const label = create ? "Sign Up" : "Sign In";
 
   /* ------------------------------------------------------------
      STEP 2: SUBMIT HANDLER (CALLING SUPABASE AUTH)
@@ -47,8 +64,23 @@ function LoginRegister({open, handleClose, signup = false}) {
        6. Call setIsSubmitting(false).
      ------------------------------------------------------------ */
 
-  // TODO: Write async function handleSubmit(e)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email || !password) return;
 
+    setIsSubmitting(true);
+    setError(null);
+
+    const { error: authError } = create
+      ? await supabase.auth.signUp({ email, password })
+      : await supabase.auth.signInWithPassword({ email, password });
+
+    if (authError) {
+      console.log(authError);
+      setError(authError);
+    }
+    setIsSubmitting(false);
+  };
 
   /* ------------------------------------------------------------
      STEP 3: SWITCHING BETWEEN SIGN IN & SIGN UP
@@ -57,12 +89,20 @@ function LoginRegister({open, handleClose, signup = false}) {
        - handleSignIn(): clears error (setError(null)) and sets create to false
      ------------------------------------------------------------ */
 
-  // TODO: Write handleSignUp and handleSignIn
+  const handleSignUp = () => {
+    setError(null);
+    setCreate(true);
+  };
+
+  const handleSignIn = () => {
+    setError(null);
+    setCreate(false);
+  };
 
   return (
     <Dialog
-      PaperProps={{sx: {opacity: 0.95}}}
-      style={{backgroundColor: 'transparent'}}
+      PaperProps={{ sx: { opacity: 0.95 } }}
+      style={{ backgroundColor: "transparent" }}
       open={open}
       onClose={handleClose}
       aria-labelledby="alert-dialog-title"
@@ -73,10 +113,10 @@ function LoginRegister({open, handleClose, signup = false}) {
           component="form"
           onSubmit={handleSubmit}
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            minWidth: '330px',
-            '& > *': {m: 1},
+            display: "flex",
+            flexDirection: "column",
+            minWidth: "330px",
+            "& > *": { m: 1 },
           }}
           noValidate
           autoComplete="off"
@@ -89,7 +129,7 @@ function LoginRegister({open, handleClose, signup = false}) {
             color="secondary"
             required
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             id="password"
@@ -99,11 +139,11 @@ function LoginRegister({open, handleClose, signup = false}) {
             color="secondary"
             required
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <Button
-            style={{margin: '20px 0 5px 0'}}
+            style={{ margin: "20px 0 5px 0" }}
             variant="contained"
             color="secondary"
             type="submit"
@@ -133,7 +173,7 @@ function LoginRegister({open, handleClose, signup = false}) {
                   />
                 }
                 label={
-                  <Typography component="span" style={{fontSize: '0.8rem'}}>
+                  <Typography component="span" style={{ fontSize: "0.8rem" }}>
                     Remember me
                   </Typography>
                 }
@@ -143,13 +183,13 @@ function LoginRegister({open, handleClose, signup = false}) {
         </Box>
 
         {error ? (
-          <Alert severity="error" sx={{mt: 2}}>
-            Error: {error.message || 'Authentication failed'}
+          <Alert severity="error" sx={{ mt: 2 }}>
+            Error: {error.message || "Authentication failed"}
           </Alert>
         ) : null}
       </DialogContent>
 
-      <DialogActions style={{justifyContent: 'flex-start'}}>
+      <DialogActions style={{ justifyContent: "flex-start" }}>
         {!create ? (
           <Button onClick={handleSignUp} color="secondary">
             New to Netflix? Sign up now
@@ -161,7 +201,7 @@ function LoginRegister({open, handleClose, signup = false}) {
         )}
       </DialogActions>
     </Dialog>
-  )
+  );
 }
 
-export {LoginRegister}
+export { LoginRegister };

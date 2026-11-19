@@ -16,7 +16,8 @@
    component from './components/LoginRegister'.
    ------------------------------------------------------------ */
 
-// TODO: Import React and { LoginRegister }
+import React from 'react'
+import {LoginRegister} from './components/LoginRegister'
 
 
 /* ------------------------------------------------------------
@@ -32,7 +33,18 @@
         <LoginRegister open={true} />
    ------------------------------------------------------------ */
 
-// TODO: Write function UnauthApp() returning the landing page JSX
+function UnauthApp() {
+  return (
+    <div className="unauth-page">
+      <img
+        src="/images/netflix-logo.png"
+        alt="Netflix"
+        className="unauth-logo"
+      />
+      <LoginRegister open={true} />
+    </div>
+  )
+}
 
 
 /* ------------------------------------------------------------
@@ -41,4 +53,4 @@
    render it whenever no user is logged in.
    ------------------------------------------------------------ */
 
-// TODO: Export UnauthApp as default
+export default UnauthApp

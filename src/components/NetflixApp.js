@@ -37,7 +37,15 @@ const NetflixApp = ({logout}) => {
           and pass response.data to setHeaderMovie(response.data).
      ------------------------------------------------------------ */
 
-  // TODO: Write useEffect to fetch the initial featured show and call setHeaderMovie
+  useEffect(() => {
+    const url = `${API_URL}/${type}/${defaultMovieId}?api_key=${apiKey}&language=${lang}`
+
+    axios
+      .get(url)
+      .then(response => setHeaderMovie(response.data))
+      .catch(error => console.error('Error fetching header movie:', error))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultMovieId])
 
 
   /* ------------------------------------------------------------

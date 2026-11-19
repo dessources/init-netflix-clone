@@ -31,7 +31,8 @@ function App() {
        - loading: starts as true (while we check if a session exists)
      ------------------------------------------------------------ */
 
-  // TODO: Declare [user, setUser] and [loading, setLoading] using useState
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
 
 
   /* ------------------------------------------------------------
@@ -46,7 +47,21 @@ function App() {
        3. Return a cleanup function to unsubscribe when unmounted.
      ------------------------------------------------------------ */
 
-  // TODO: Write useEffect to check getSession() and subscribe to onAuthStateChange()
+  useEffect(() => {
+    supabase.auth.getSession().then(({data: {session}}) => {
+      setUser(session?.user ?? null)
+      setLoading(false)
+    })
+
+    const {
+      data: {subscription},
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+      setLoading(false)
+    })
+
+    return () => subscription?.unsubscribe?.()
+  }, [])
 
 
   /* ------------------------------------------------------------
@@ -56,7 +71,14 @@ function App() {
      2. If loading is true, return <LoadingFullScreen />.
      ------------------------------------------------------------ */
 
-  // TODO: Write handleLogout() and return <LoadingFullScreen /> while loading
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    setUser(null)
+  }
+
+  if (loading) {
+    return <LoadingFullScreen />
+  }
 
   return (
     <ThemeProvider theme={theme}>

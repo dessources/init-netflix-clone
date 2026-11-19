@@ -32,7 +32,7 @@ const NetflixRow = ({
      Once TMDB responds, movies will hold the array of movie objects.
      ------------------------------------------------------------ */
 
-  // TODO: Declare [movies, setMovies] initialized to null
+  const [movies, setMovies] = useState(null);
 
   /* ------------------------------------------------------------
      STEP 2: BUILD THE TMDB URL & FETCH MOVIES (useEffect)
@@ -49,7 +49,22 @@ const NetflixRow = ({
           response.data.results to setMovies.
      ------------------------------------------------------------ */
 
-  // TODO: Write useEffect to fetch the movies from TMDB (first with fetch, then with axios.get)
+  useEffect(() => {
+    const endpoint = getEndpoint(type, filter, param);
+    const url = `${API_URL}/${endpoint}api_key=${apiKey}&language=${lang}&page=1`;
+
+    // --- STEP 2A: Using native browser fetch() ---
+    // fetch(url)
+    //   .then(res => res.json())
+    //   .then(data => setMovies(data.results ?? []))
+    //   .catch(error => console.error('Error fetching row:', error))
+
+    // --- STEP 2B: Simplified with axios.get() ---
+    axios
+      .get(url)
+      .then((response) => setMovies(response.data?.results ?? []))
+      .catch((error) => console.error("Error fetching row:", error));
+  }, [type, filter, param]);
 
   /* ------------------------------------------------------------
      STEP 3: LOADING SKELETON CHECK
@@ -57,7 +72,9 @@ const NetflixRow = ({
        <RowSkeleton title={title} wideImage={wideImage} />
      ------------------------------------------------------------ */
 
-  // TODO: Return <RowSkeleton title={title} wideImage={wideImage} /> if !movies
+  if (!movies) {
+    return <RowSkeleton title={title} wideImage={wideImage} />;
+  }
 
   return (
     <NetflixRowView

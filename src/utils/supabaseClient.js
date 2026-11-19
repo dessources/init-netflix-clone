@@ -12,8 +12,8 @@
    Import { createClient } from '@supabase/supabase-js'.
    ------------------------------------------------------------ */
 
-// TODO: Import { createClient } from '@supabase/supabase-js'
-
+import { createClient } from "@supabase/supabase-js";
+import { createMockSupabase, isSupabaseConfigured } from "./helper";
 
 /* ------------------------------------------------------------
    STEP 2: READ PROJECT CREDENTIALS FROM .env
@@ -22,13 +22,15 @@
    supabaseAnonKey.
    ------------------------------------------------------------ */
 
-// TODO: Define supabaseUrl and supabaseAnonKey from process.env
-
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
+const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 
 /* ------------------------------------------------------------
    STEP 3: INITIALIZE & EXPORT THE SUPABASE CLIENT
    Export a constant named "supabase" initialized by calling
    createClient(supabaseUrl, supabaseAnonKey).
    ------------------------------------------------------------ */
-
-// TODO: Export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+console.log(supabaseUrl, supabaseAnonKey);
+export const supabase = isSupabaseConfigured(supabaseUrl, supabaseAnonKey)
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : createMockSupabase();
