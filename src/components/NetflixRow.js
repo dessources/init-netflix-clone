@@ -27,17 +27,19 @@ const NetflixRow = ({
 }) => {
   /* ------------------------------------------------------------
      STEP 1: MOVIES STATE (useState)
-     Create a state variable "movies" initialized to null.
+     Replace the placeholder below with a real useState hook:
+       const [movies, setMovies] = useState(null)
      While movies is null, the row displays a loading skeleton.
      Once TMDB responds, movies will hold the array of movie objects.
      ------------------------------------------------------------ */
 
-  // TODO: Declare [movies, setMovies] initialized to null
+  // TODO: Replace with const [movies, setMovies] = useState(null)
+  const movies = null;
 
   /* ------------------------------------------------------------
      STEP 2: BUILD THE TMDB URL & FETCH MOVIES (useEffect)
      Inside useEffect(..., [type, filter, param]):
-       1. Get the endpoint
+       1. Get the endpoint:
           const endpoint = getEndpoint(type, filter, param)
        2. Build the full request URL:
           const url = `${API_URL}/${endpoint}api_key=${apiKey}&language=${lang}&page=1`
@@ -53,11 +55,12 @@ const NetflixRow = ({
 
   /* ------------------------------------------------------------
      STEP 3: LOADING SKELETON CHECK
-     If movies has not loaded yet (!movies), return:
-       <RowSkeleton title={title} wideImage={wideImage} />
+     While movies has not loaded yet (!movies), return <RowSkeleton />.
      ------------------------------------------------------------ */
 
-  // TODO: Return <RowSkeleton title={title} wideImage={wideImage} /> if !movies
+  if (!movies) {
+    return <RowSkeleton title={title} wideImage={wideImage} />;
+  }
 
   return (
     <NetflixRowView

@@ -18,13 +18,12 @@
 
 // TODO: Import React and { LoginRegister }
 
-
 /* ------------------------------------------------------------
    STEP 2: THE COMPONENT FUNCTION & JSX
    A React component is a JavaScript function that returns JSX
    (HTML-like syntax).
    
-   Write function UnauthApp() so it returns:
+   Replace the placeholder function below so UnauthApp() returns:
      1. A wrapper <div className="unauth-page">
      2. Inside it, the Netflix logo:
         <img src="/images/netflix-logo.png" alt="Netflix" className="unauth-logo" />
@@ -32,8 +31,10 @@
         <LoginRegister open={true} />
    ------------------------------------------------------------ */
 
-// TODO: Write function UnauthApp() returning the landing page JSX
-
+// TODO: Replace this placeholder with your UnauthApp component JSX
+function UnauthApp() {
+  return null;
+}
 
 /* ------------------------------------------------------------
    STEP 3: EXPORT THE COMPONENT
@@ -41,4 +42,4 @@
    render it whenever no user is logged in.
    ------------------------------------------------------------ */
 
-// TODO: Export UnauthApp as default
+export default UnauthApp;

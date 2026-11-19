@@ -17,47 +17,56 @@ import {supabase} from '../utils/supabaseClient'
 function LoginRegister({open, handleClose, signup = false}) {
   /* ------------------------------------------------------------
      STEP 1: FORM & AUTH STATE (useState)
-     Declare state variables to track what the user types and the
-     current status of the form:
-       - create: initialized to signup (false = Sign In, true = Sign Up)
-       - email: initialized to ''
-       - password: initialized to ''
-       - checked: initialized to false ("Remember me" checkbox)
-       - isSubmitting: initialized to false (loading spinner state)
-       - error: initialized to null (holds any Supabase error)
+     Replace the placeholder values below with real useState hooks:
+       - create: useState(signup) (false = Sign In, true = Sign Up)
+       - email: useState('')
+       - password: useState('')
+       - checked: useState(false) ("Remember me" checkbox)
+       - isSubmitting: useState(false) (loading spinner state)
+       - error: useState(null) (holds any Supabase error)
      
-     Also create a helper constant:
+     Also keep the helper constant:
        const label = create ? 'Sign Up' : 'Sign In'
      ------------------------------------------------------------ */
 
-  // TODO: Declare create, email, password, checked, isSubmitting, error, and label
-
+  // TODO: Replace these placeholders with useState(...)
+  const [create, setCreate] = [signup, () => {}]
+  const [email, setEmail] = ['', () => {}]
+  const [password, setPassword] = ['', () => {}]
+  const [checked, setChecked] = [false, () => {}]
+  const [isSubmitting, setIsSubmitting] = [false, () => {}]
+  const [error, setError] = [null, () => {}]
+  const label = create ? 'Sign Up' : 'Sign In'
 
   /* ------------------------------------------------------------
      STEP 2: SUBMIT HANDLER (CALLING SUPABASE AUTH)
-     Write an async function named handleSubmit(e):
-       1. Call e.preventDefault() so the browser doesn't reload the page.
-       2. If !email || !password, return early.
-       3. Call setIsSubmitting(true) and setError(null).
+     Update handleSubmit(e) to be an async function that:
+       1. Calls e.preventDefault() so the browser doesn't reload.
+       2. If !email || !password, returns early.
+       3. Calls setIsSubmitting(true) and setError(null).
        4. If "create" is true (Sign Up mode):
             await supabase.auth.signUp({ email, password })
           Otherwise (Sign In mode):
             await supabase.auth.signInWithPassword({ email, password })
-       5. If Supabase returns an { error }, pass it to setError(error).
-       6. Call setIsSubmitting(false).
+       5. If Supabase returns an { error }, passes it to setError(error).
+       6. Calls setIsSubmitting(false).
      ------------------------------------------------------------ */
 
-  // TODO: Write async function handleSubmit(e)
-
+  // TODO: Implement async handleSubmit(e) with Supabase Auth
+  const handleSubmit = e => {
+    e.preventDefault()
+  }
 
   /* ------------------------------------------------------------
      STEP 3: SWITCHING BETWEEN SIGN IN & SIGN UP
-     Write two helper functions:
+     Fill in these two helper functions:
        - handleSignUp(): clears error (setError(null)) and sets create to true
        - handleSignIn(): clears error (setError(null)) and sets create to false
      ------------------------------------------------------------ */
 
-  // TODO: Write handleSignUp and handleSignIn
+  // TODO: Implement handleSignUp and handleSignIn
+  const handleSignUp = () => {}
+  const handleSignIn = () => {}
 
   return (
     <Dialog

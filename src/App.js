@@ -26,13 +26,14 @@ const theme = createTheme({
 function App() {
   /* ------------------------------------------------------------
      STEP 1: USER & LOADING STATE (useState)
-     Create two state variables:
-       - user: starts as null (holds the logged-in user object)
-       - loading: starts as true (while we check if a session exists)
+     Replace the placeholders below with real useState hooks:
+       - user: useState(null) (holds the logged-in user object)
+       - loading: useState(true) (while we check if a session exists)
      ------------------------------------------------------------ */
 
-  // TODO: Declare [user, setUser] and [loading, setLoading] using useState
-
+  // TODO: Replace with const [user, setUser] = useState(null) and [loading, setLoading] = useState(true)
+  const user = null
+  const loading = false
 
   /* ------------------------------------------------------------
      STEP 2: LISTEN FOR AUTH SESSION (useEffect)
@@ -51,12 +52,18 @@ function App() {
 
   /* ------------------------------------------------------------
      STEP 3: LOGOUT HANDLER & LOADING CHECK
-     1. Write an async function handleLogout() that calls
-        await supabase.auth.signOut() and sets user to null.
-     2. If loading is true, return <LoadingFullScreen />.
+     1. Update handleLogout() to call await supabase.auth.signOut()
+        and set user to null.
+     2. Keep the loading check so <LoadingFullScreen /> renders
+        while loading is true.
      ------------------------------------------------------------ */
 
-  // TODO: Write handleLogout() and return <LoadingFullScreen /> while loading
+  // TODO: Implement async handleLogout() with supabase.auth.signOut()
+  const handleLogout = () => {}
+
+  if (loading) {
+    return <LoadingFullScreen />
+  }
 
   return (
     <ThemeProvider theme={theme}>

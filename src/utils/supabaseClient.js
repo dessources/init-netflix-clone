@@ -27,8 +27,9 @@
 
 /* ------------------------------------------------------------
    STEP 3: INITIALIZE & EXPORT THE SUPABASE CLIENT
-   Export a constant named "supabase" initialized by calling
-   createClient(supabaseUrl, supabaseAnonKey).
+   Replace the placeholder null below by calling:
+     createClient(supabaseUrl, supabaseAnonKey)
    ------------------------------------------------------------ */
 
-// TODO: Export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// TODO: Replace null with createClient(supabaseUrl, supabaseAnonKey)
+export const supabase = null
